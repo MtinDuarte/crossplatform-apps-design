@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-@Component({
-  selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+/* Esto se denomina Decorador */
+@Component({                    /* Metadata.... */
+  selector: 'app-root',         // Etiqueta (así se usa en html)
+  imports: [RouterOutlet],      // Módulos que usa este componente
+  templateUrl: './app.html',    // Archivo template
+  styleUrl: './app.css'         // Estilos
 })
 export class App {
   protected title = 'app';

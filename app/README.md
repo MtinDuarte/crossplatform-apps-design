@@ -1,59 +1,34 @@
-# App
+Web App Full Stack Base - Ionic frontend
+========================================
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+Proyecto basado en [Web App Full Stack Base](https://github.com/gotoiot/app-fullstack-base).
 
-## Development server
+En esta extensión del proyecto se utiliza el framework ionic para realizar el frontend.
 
-To start a local development server, run:
+## Comenzando 🚀
 
-```bash
-ng serve
-```
+Esta sección es una guía con los pasos esenciales para que puedas poner en marcha la aplicación.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Instalar las dependencias
 
-## Code scaffolding
+Para correr este proyecto es necesario que instales `Docker` y `Docker Compose`. 
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+En [este artículo](https://www.gotoiot.com/pages/articles/docker_installation_linux/) publicado en nuestra web están los detalles para instalar Docker y Docker Compose en una máquina Linux. Si querés instalar ambas herramientas en una Raspberry Pi podés seguir [este artículo](https://www.gotoiot.com/pages/articles/rpi_docker_installation) de nuestra web que te muestra todos los pasos necesarios.
 
-```bash
-ng generate component component-name
-```
+En caso que quieras instalar las herramientas en otra plataforma o tengas algún incoveniente, podes leer la documentación oficial de [Docker](https://docs.docker.com/get-docker/) y también la de [Docker Compose](https://docs.docker.com/compose/install/).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Continua con la descarga del código cuando tengas las dependencias instaladas y funcionando.
 
-```bash
-ng generate --help
-```
+### Ejecutar la aplicación
 
-## Building
+Para ejecutar la aplicación tenes que correr el comando `docker compose up` desde la raíz del proyecto. Este comando va a descargar las imágenes de Docker de node, de typescript, de la base datos y del admin de la DB, y luego ponerlas en funcionamiento. 
 
-To build the project run:
+Para acceder al cliente web ingresa a a la URL [http://localhost:8100/](http://localhost:8100/) y para acceder al admin de la DB accedé a [localhost:8001/](http://localhost:8001/). 
 
-```bash
-ng build
-```
+Si pudiste acceder al cliente web y al administrador significa que la aplicación se encuentra corriendo bien. 
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+> Si te aparece un error la primera vez que corres la app, deteńe el proceso y volvé a iniciarla. Esto es debido a que el backend espera que la DB esté creada al iniciar, y en la primera ejecución puede no alcanzar a crearse. A partir de la segunda vez el problema queda solucionado.
 
-## Running unit tests
+## Licencia 📄
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Este proyecto está bajo Licencia ([MIT](https://choosealicense.com/licenses/mit/)). Podés ver el archivo [LICENSE.md](LICENSE.md) para más detalles sobre el uso de este material.
