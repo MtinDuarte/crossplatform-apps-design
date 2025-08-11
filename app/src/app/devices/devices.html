@@ -1,1 +1,38 @@
-<p>devices works!</p>
+<!--
+- "Vincular propiedades"
+Ejemplo de botón con binding a "buttonState" 
+De esta manera no hace falta cambiar nada del HTML, 
+simplemente desde el controlador es posible manejar
+el comportamiento de este botón. 
+
+[One - way - bindings ]
+    
+    Binding property to a variable:
+        [property]="<variable-name" 
+
+    Binding events:
+        (event)="<method-name()"
+
+    Binding Text - "Interpolation":
+        <instance>{{Insert-text-here}}<\instance>
+
+[Two - way - bindings]
+
+
+-->
+<h1> One way - binding </h1>
+<button [disabled]="buttonState" (click)="changeButtonState()">{{buttonText}}</button>
+
+<h1> Two way - binding </h1>
+
+<!-- 
+Two way - binding 
+    Este binding necesita importar un módulo que es de formulario.
+    El intput adopta el texto que posee button text, pero en el caso
+    de que cambie el texto del botón por medio del controlador, también
+    cambiará el del input (1 vía)
+    Y en caso de borrar el text desde el html, también se borra el del botón,
+    (+1 vía) 
+    = (2 vías)
+-->
+<input type="text" [(ngModel)]="buttonText">
