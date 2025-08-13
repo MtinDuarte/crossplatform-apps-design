@@ -3,12 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { Logger } from '../../services/logger';
 import { IDevices } from '../interfaces/IDevices';
 import { Database } from '../../services/database';
+import { FromCelsiusToFarenheitPipe } from '../../pipes/from-celsius-to-farenheit-pipe';
 
 
 @Component({
   selector: 'app-devices',
   standalone : true,            // Este componente puede funcionar por si solo sin un "módulo"
-  imports: [FormsModule],
+  imports: [FormsModule, FromCelsiusToFarenheitPipe],
   templateUrl: './devices.html',
   styleUrl: './devices.css'
 })
@@ -16,6 +17,7 @@ export class Devices {
 
   buttonState: boolean;
   buttonText : string;
+  currentTempInCelsius : number;
 
   db_devices : IDevices[];
   /* Declare logging service object */
@@ -27,6 +29,7 @@ export class Devices {
     this.buttonState = false;
     this.buttonText = "Press me";
     this.db_devices = [];
+    this.currentTempInCelsius = 24;
     /* Inject logging with the service  */
     this.Logging = inject(Logger);
     this.Database = inject(Database);
