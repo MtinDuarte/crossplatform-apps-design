@@ -5,11 +5,12 @@ import { IDevices } from '../interfaces/IDevices';
 import { Database } from '../../services/database';
 import { FromCelsiusToFarenheitPipe } from '../pipes/temp-pipe';
 import { FromCelsiusToKelvinPipe    } from '../pipes/temp-pipe';
+import { Highlight } from '../directives/highlight';
 
 @Component({
   selector: 'app-devices',
   standalone : true,            // Este componente puede funcionar por si solo sin un "módulo"
-  imports: [FormsModule, FromCelsiusToFarenheitPipe,FromCelsiusToKelvinPipe],
+  imports: [FormsModule, FromCelsiusToFarenheitPipe,FromCelsiusToKelvinPipe,Highlight],
   templateUrl: './devices.html',
   styleUrl: './devices.css'
 })
