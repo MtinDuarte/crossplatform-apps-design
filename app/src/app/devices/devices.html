@@ -44,4 +44,12 @@ Two way - binding
 
 
 <!-- La temperatura es:  -->
-<p>La temperatura es: {{currentTempInCelsius | fromCelsiusToFarenheit}} °F </p>
+ @if(buttonState)
+ {
+    <p>La temperatura es: {{currentTempInCelsius | fromCelsiusToFarenheit}} °F </p>
+
+ }@else
+ {
+    <p>La temperatura es: {{currentTempInCelsius | fromCelsiusToKelvin}} °K </p>
+ }
+

@@ -1,6 +1,6 @@
-import { FromCelsiusToFarenheitPipe } from './from-celsius-to-farenheit-pipe';
+import { FromCelsiusToFarenheitPipe } from './temp-pipe';
 
-describe('FromCelsiusToFarenheitPipe', () => {
+describe('TempPipe', () => {
   it('create an instance', () => {
     const pipe = new FromCelsiusToFarenheitPipe();
     expect(pipe).toBeTruthy();

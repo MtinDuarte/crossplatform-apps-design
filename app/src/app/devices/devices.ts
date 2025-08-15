@@ -3,13 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { Logger } from '../../services/logger';
 import { IDevices } from '../interfaces/IDevices';
 import { Database } from '../../services/database';
-import { FromCelsiusToFarenheitPipe } from '../../pipes/from-celsius-to-farenheit-pipe';
-
+import { FromCelsiusToFarenheitPipe } from '../pipes/temp-pipe';
+import { FromCelsiusToKelvinPipe    } from '../pipes/temp-pipe';
 
 @Component({
   selector: 'app-devices',
   standalone : true,            // Este componente puede funcionar por si solo sin un "módulo"
-  imports: [FormsModule, FromCelsiusToFarenheitPipe],
+  imports: [FormsModule, FromCelsiusToFarenheitPipe,FromCelsiusToKelvinPipe],
   templateUrl: './devices.html',
   styleUrl: './devices.css'
 })
