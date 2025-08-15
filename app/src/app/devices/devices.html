@@ -44,6 +44,10 @@ Two way - binding
 
 
 <!-- La temperatura es:  -->
+ <p>Uso de If/else mediante button "Press me". 
+     Si el botón no está presionado muestra °K y si se presiona 
+     muestra °F de una temperatura de 24°C
+ </p>
  @if(buttonState)
  {
     <p>La temperatura es: {{currentTempInCelsius | fromCelsiusToFarenheit}} °F </p>
@@ -52,4 +56,21 @@ Two way - binding
  {
     <p>La temperatura es: {{currentTempInCelsius | fromCelsiusToKelvin}} °K </p>
  }
+
+
+ <p>Uso de for: </p>
+ @for (item of db_devices; track item.id) 
+ {
+    <p>ID: {{item.id}}; Nombre:{{item.name}} ; Localización: {{item.location}}</p>
+ }@empty 
+ {
+    <p>No hay dispositivos</p>
+ }
+
+
+
+
+
+
+
 
