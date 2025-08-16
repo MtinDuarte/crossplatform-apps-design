@@ -1,0 +1,14 @@
+<h1><button (click)="getDevicesFromDatabase()">GetDevices</button></h1>
+
+ @for (item of db_devices; track item.id) 
+ {
+   <app-devices [Device]="item" (OnChange)="onChangeHandler($event)"> </app-devices>
+
+    <!-- <p>ID: {{item.id}}; Nombre:{{item.name}} ; Localización: {{item.location}}</p> -->
+ }@empty 
+ {
+    <p appHighlight>No hay dispositivos</p>
+ }
+
+
+
