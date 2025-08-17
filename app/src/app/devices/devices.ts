@@ -12,8 +12,7 @@ import { IDevices } from '../interfaces/IDevices';
 })
 export class Devices 
 {
-  @Input()
-  Device : any;
+  Device = input<IDevices>();
 
   OnChange = output<any>();
   /* Declare logging service object */
@@ -27,7 +26,6 @@ export class Devices
 
   changeLocation()
   {
-     this.Device.location = 'Nueva ubicación';
      this.OnChange.emit(this.Device);
   }
 }

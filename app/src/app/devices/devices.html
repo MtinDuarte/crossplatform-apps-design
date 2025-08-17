@@ -1,7 +1,7 @@
 <div>
-    ID: {{Device?.id}}
-    Nombre:{{Device?.name}}
-    Localización: {{Device?.location}}
+    ID: {{Device()?.id}}
+    Nombre:{{Device()?.name}}
+    Localización: {{Device()?.location}}
     <button (click) = "changeLocation()"> Change Location</button>
 </div>
 
