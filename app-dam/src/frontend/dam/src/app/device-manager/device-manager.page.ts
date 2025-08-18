@@ -1,8 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton } from '@ionic/angular/standalone';
 import { fromEvent, interval, Observable, Subscription } from 'rxjs';
+import { DatabaseService } from '../services/database.service';
+import { IDevices}  from '../interfaces/IDevices'
 
 @Component({
   selector: 'app-device-manager',
@@ -17,39 +19,27 @@ export class DeviceManagerPage implements OnInit , OnDestroy{
      se utiliza en variables observables colocar el signo '$' 
      para describir la variable.  
    */
-
-  ob$ : Observable<any>;
-  sub : Subscription;
-  mouseMove$ = fromEvent(document,'mousemove')
-
+  mouseMove$ = fromEvent(document,'mousemove');
+  DBService : DatabaseService;
+  DevicesGroup : IDevices[];
 
   constructor() 
   {
-    this.ob$ = interval(1000);
-
-    this.sub = this.mouseMove$.subscribe((evt: any) => 
-    {
-      console.log(`Coords: ${evt.clientX} x , ${evt.clientY} y`)
-    })
-    //this.sub = this.ob$.subscribe( (value) => {console.log(value)});
-  }
-
-  UnsubscribeClick()
-  {
-    this.sub.unsubscribe();
-  }
-
-  SubscribeClick()
-  {
-    this.sub = this.mouseMove$.subscribe((evt: any) => 
-    {
-      console.log(`Coords: ${evt.clientX} x , ${evt.clientY} y`)
-    })
+    this.DBService = inject(DatabaseService);
+    this.DevicesGroup = [];
   }
   ngOnInit() {
+
+    this.DBService.getDevices().then((res: IDevices[]) => 
+    {
+      this.DevicesGroup = res;
+      console.log(res);
+    }).catch((error) => 
+    {
+      console.log(error);
+    })
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
   }
 }

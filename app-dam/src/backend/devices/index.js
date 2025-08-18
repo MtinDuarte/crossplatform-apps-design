@@ -1,5 +1,14 @@
 const express = require('express')
+var cors = require('cors');
 const deviceRouter = express.Router();
+
+/* CORS handling  */
+const corsOptions =
+{
+    // Cualquier origen es permitido [Sólo desarrollo]
+    origin : '*'
+}
+deviceRouter.use(cors(corsOptions))
 
 let endpoint = '/devices';
 
