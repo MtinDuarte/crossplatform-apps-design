@@ -43,7 +43,7 @@ pool.getConnection((err,conn) => {
     {
         if(conn)
         {
-            console.log(conn);
+            console.log('Conexión OK');
             conn.release();
         }
     }

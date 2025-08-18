@@ -10,7 +10,7 @@ services:
       volumes:
          -                      ./src/frontend/dam:/src/frontend/dam
          -                      /src/frontend/dam/node_modules
-      command:                  ionic serve --external
+      command:                  sh -lc "npm install && ionic serve --external"
 
     mysql-server:
         image:                   mysql:5.7
@@ -54,7 +54,7 @@ services:
             -                    mysql-server
         ports: 
             -                    "8000:3000"
-        command:                 nodemon index.js -L
+        command:                 sh -lc "npm install && nodemon index.js -L"
 
 networks:
     app-fullstack-net:
