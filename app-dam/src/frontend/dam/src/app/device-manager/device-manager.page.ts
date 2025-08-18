@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton } from '@ionic/angular/standalone';
-import { interval, Observable, Subscription } from 'rxjs';
+import { fromEvent, interval, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-device-manager',
@@ -20,11 +20,18 @@ export class DeviceManagerPage implements OnInit , OnDestroy{
 
   ob$ : Observable<any>;
   sub : Subscription;
+  mouseMove$ = fromEvent(document,'mousemove')
+
 
   constructor() 
   {
     this.ob$ = interval(1000);
-    this.sub = this.ob$.subscribe((value) => {console.log(value)});
+
+    this.sub = this.mouseMove$.subscribe((evt: any) => 
+    {
+      console.log(`Coords: ${evt.clientX} x , ${evt.clientY} y`)
+    })
+    //this.sub = this.ob$.subscribe( (value) => {console.log(value)});
   }
 
   UnsubscribeClick()
@@ -34,8 +41,10 @@ export class DeviceManagerPage implements OnInit , OnDestroy{
 
   SubscribeClick()
   {
-    this.ob$ = interval(1000);
-    this.sub = this.ob$.subscribe((value) => {console.log(value)});
+    this.sub = this.mouseMove$.subscribe((evt: any) => 
+    {
+      console.log(`Coords: ${evt.clientX} x , ${evt.clientY} y`)
+    })
   }
   ngOnInit() {
   }
