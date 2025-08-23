@@ -70,13 +70,17 @@ Cumple los requisitos del enunciado:
     /frontend
     ├──dam
         ├──src        
-        ├── src/app/device-manager       # Página Home (/home)
-        ├── src/app/pages/device-detail  # Página detalle (/device/:id)
-        ├── src/app/pages/measurements   # Página historial (/device/:id/measurements)
-        ├── src/app/services/database.service.ts
-        ├── src/app/pipes/apertura-label.pipe.ts
-        ├── src/app/directives/humidity-color.directive.ts
-
+        ├── src/app/device-manager              # Página Home (/home)
+        ├── src/app/pages/device-detail         # Página detalle (/device/:id)
+        ├── src/app/pages/measurements          # Página historial (/device/:id/measurements)
+        ├── src/app/services/database.service.ts        # Servicio para requests a BD
+        ├── src/app/pipes/apertura-label.pipe.ts            # Pipe para formatear atributo apertura
+        ├── src/app/directives/humidity-color.directive.ts  # Directiva para colorear histórico.
+        ├── src/app/interfaces/IDevices.ts                  # Interfaz para dispositivos de BD.
+        ├── src/app/interfaces/IMeasurements.ts             # Interfaz para dato histórico de BD.
+        ├── src/app/pages/device-detail                     # Página de detalle de dispositivo.
+        ├── src/app/pages/measurements/measurement          # Página de mediciones 
+        
     /backend
     ├── devices/index.js             # Rutas /devices
     ├── mysql-connector.js           # Pool de conexión MySQL
