@@ -1,17 +1,23 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton } from '@ionic/angular/standalone';
+import { RouterModule } from '@angular/router';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton,
+         IonCard,IonCardContent,IonCardHeader,IonCardSubtitle,IonCardTitle, IonList, IonLabel} from '@ionic/angular/standalone';
 import { fromEvent, interval, Observable, Subscription } from 'rxjs';
 import { DatabaseService } from '../services/database.service';
 import { IDevices}  from '../interfaces/IDevices'
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-device-manager',
   templateUrl: './device-manager.page.html',
   styleUrls: ['./device-manager.page.scss'],
   standalone : true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton]
+  imports: [RouterModule, IonContent, IonHeader, IonTitle, IonToolbar,
+            CommonModule,FormsModule, IonButton, IonButton, IonCard,
+            IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle,
+            IonList, IonLabel]
 })
 export class DeviceManagerPage implements OnInit , OnDestroy{
 
@@ -21,10 +27,21 @@ export class DeviceManagerPage implements OnInit , OnDestroy{
    */
   mouseMove$ = fromEvent(document,'mousemove');
   DBService : DatabaseService;
-  DevicesGroup : IDevices[];
 
+  DevicesGroup : IDevices[];
+  Router : ActivatedRoute;
+  // Comunicación entre device-manager => devices   (Padre => hijo)
+  @Input()
+  id = '';
+
+
+  ionViewWillEnter()
+  {
+    console.log(this.Router.snapshot.paramMap.get('id'));
+  }
   constructor() 
   {
+    this.Router = inject(ActivatedRoute);
     this.DBService = inject(DatabaseService);
     this.DevicesGroup = [];
   }
