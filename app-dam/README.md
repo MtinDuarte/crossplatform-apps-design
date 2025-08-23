@@ -1,5 +1,8 @@
-Web App Full Stack Base - Ionic frontend
+ ## 📘 Trabajo Práctico Final — Aplicación IoT de Riego con Ionic + Node.js + MySQL
 ========================================
+
+ ### 👤 Autores
+    Martin Duarte
 
 Proyecto basado en [Web App Full Stack Base](https://github.com/gotoiot/app-fullstack-base).
 
@@ -29,6 +32,99 @@ Si pudiste acceder al cliente web y al administrador significa que la aplicació
 
 > Si te aparece un error la primera vez que corres la app, deteńe el proceso y volvé a iniciarla. Esto es debido a que el backend espera que la DB esté creada al iniciar, y en la primera ejecución puede no alcanzar a crearse. A partir de la segunda vez el problema queda solucionado.
 
+
+
+
+## 📋 Descripción
+
+Este proyecto implementa una aplicación en Ionic/Angular con un backend Node.js + Express y base de datos MySQL para gestionar dispositivos IoT (sensores de humedad y electroválvulas de riego).
+
+La app permite:
+
+- Ver un listado de dispositivos con su nombre y ubicación.
+
+- Consultar el detalle de un dispositivo con su última medición.
+
+- Abrir/cerrar la electroválvula asociada (toggle).
+
+- Registrar automáticamente la medición de humedad y la acción de riego.
+
+- Visualizar el historial de mediciones de cada dispositivo.
+
+Cumple los requisitos del enunciado:
+
+- Lecturas desde BD: solo en /home (lista de dispositivos) y /device/:id/measurements (histórico).
+
+- Escrituras: solo al accionar la válvula (insert en Mediciones y Log_Riegos).
+
+- Incluye pipe custom, directiva de atributo, 2× @for y 1× @if.
+
+## ⚙️ Tecnologías utilizadas
+
+- Frontend: Ionic 7.2.1 + Angular 18.2.11 (standalone components, @for/@if, pipes, directivas).
+- Backend: Node.js (v22.17.0) + Express + MySQL.
+- Base de datos: MySQL.
+
+📂 Estructura principal
+
+    /frontend
+    ├──dam
+        ├──src        
+        ├── src/app/device-manager       # Página Home (/home)
+        ├── src/app/pages/device-detail  # Página detalle (/device/:id)
+        ├── src/app/pages/measurements   # Página historial (/device/:id/measurements)
+        ├── src/app/services/database.service.ts
+        ├── src/app/pipes/apertura-label.pipe.ts
+        ├── src/app/directives/humidity-color.directive.ts
+
+    /backend
+    ├── devices/index.js             # Rutas /devices
+    ├── mysql-connector.js           # Pool de conexión MySQL
+
+## Endpoints creados sobre el backend
+
+Sobre la API backend se crearon los siguientes endpoints: 
+
+    Obtener todos los dispositivos
+    GET     devices
+
+    Obtener dispositivo por id:
+    GET     devices/:id
+
+    Obtener todas las mediciones:
+    GET     devices/measurements
+
+    Obtener última medicion por id de dispositivo:
+    GET     devices/:id/last-measurement
+    
+    Obtener mediciones por id de dispositivo
+    GET     devices/:id/measurements
+
+    Consolidar datos luego de conmutar electroválvula
+    POST    devices/:id/toggle
+
+
+📸 Capturas
+
+Capturas del la página de inicio donde se muestran todos
+los dispositivos.
+![LandingPage](images/homepage.png)
+
+Al hacer click, se puede ir a un modal de detalle de cada dispositivo. 
+![Device-Details](images/Device-Details.png)
+
+Apretando el botón de histórico de mediciones se accede a la siguiente página.
+Los colores que se presentan en cada cuadro guardan relación con la humedad de cada medición.
+- Niveles bajos (verdes) corresponden a niveles por debajo del 30 %
+- Niveles altos (rojos) corresponden a niveles por encima del 60 %
+- Niveles intermedios (azules) corresponden a niveles entre 30 - 60 %
+
+![Histórico de mediciones](images/Device-Measurement-History.png)
+
+
+## Funcionamiento
+
+![Histórico de mediciones](images/funcionamiento.gif)
 ## Licencia 📄
 
 Este proyecto está bajo Licencia ([MIT](https://choosealicense.com/licenses/mit/)). Podés ver el archivo [LICENSE.md](LICENSE.md) para más detalles sobre el uso de este material.

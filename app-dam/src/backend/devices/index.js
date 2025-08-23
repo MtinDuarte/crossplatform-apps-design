@@ -43,7 +43,7 @@ deviceRouter.get(endpoint + '/measurements', function (req, res) {
 });
 
 /**
- * Get measurement resource by id
+ * Get last measurement resource by id
  */
 deviceRouter.get(endpoint + "/:id/last-measurement", function(req, res) {
   const id = req.params.id;
@@ -79,6 +79,10 @@ deviceRouter.get(endpoint + '/:id/measurements', function (req, res) {
     return res.status(200).json(rows);
   });
 });
+
+/**
+ * Consolidate deviceData after toggle
+ */
 deviceRouter.post(endpoint + '/:id' + '/toggle', function(req,res,next)
 {
     const deviceId = Number(req.params.id)

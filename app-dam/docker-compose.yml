@@ -1,16 +1,15 @@
 services:
-
     ionic-ui:
-      build:
-        context:                ./src/frontend/dam
-        dockerfile:             Dockerfile
-      ports:
-        -                       "8100:8100"
-      container_name:           ionic-ui
-      volumes:
-         -                      ./src/frontend/dam:/src/frontend/dam
-         -                      /src/frontend/dam/node_modules
-      command:                  sh -lc "npm install && ionic serve --external"
+        build:
+            context:            ./src/frontend/dam
+            dockerfile:         Dockerfile
+        ports:
+            -                   "8100:8100"
+        volumes:
+            -                   ./src/frontend/dam:/src/frontend/dam
+            -                   /src/frontend/dam/node_modules
+        command:                ionic serve --external
+
 
     mysql-server:
         image:                   mysql:5.7
@@ -54,7 +53,7 @@ services:
             -                    mysql-server
         ports: 
             -                    "8000:3000"
-        command:                 sh -lc "npm install && nodemon index.js -L"
+        command:                 nodemon index.js -L
 
 networks:
     app-fullstack-net:
