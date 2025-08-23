@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalle del Dispositivo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-content>
+      <p><strong>ID:</strong> {{ id }}</p>
+      <p><strong>Última humedad:</strong> {{ ultimaMedicion }} %</p>
+      <p><strong>Electroválvula:</strong> {{ valveState }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" (click)="toggleValve()">
+    {{ valveState === 'abierta' ? 'Cerrar' : 'Abrir' }} válvula
+  </ion-button>
+
+  <ion-button expand="block" color="medium" [routerLink]="['/device', id, 'measurements']">
+    Ver historial de mediciones
+  </ion-button>
+</ion-content>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton,
-         IonCard,IonCardContent,IonCardHeader,IonCardSubtitle,IonCardTitle, IonList, IonLabel} from '@ionic/angular/standalone';
+         IonCard,IonCardContent,IonCardHeader,IonCardSubtitle,IonCardTitle, IonList, IonLabel, IonItem} from '@ionic/angular/standalone';
 import { fromEvent, interval, Observable, Subscription } from 'rxjs';
 import { DatabaseService } from '../services/database.service';
 import { IDevices}  from '../interfaces/IDevices'
@@ -17,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
   imports: [RouterModule, IonContent, IonHeader, IonTitle, IonToolbar,
             CommonModule,FormsModule, IonButton, IonButton, IonCard,
             IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle,
-            IonList, IonLabel]
+            IonList, IonLabel,IonItem]
 })
 export class DeviceManagerPage implements OnInit , OnDestroy{
 

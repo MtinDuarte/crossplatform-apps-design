@@ -8,12 +8,6 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'  
   },
-  // Paths desconocidos a home
-  {
-    path: '**',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
   {
     path: 'home',
     //Eager loading: El componente se carga al inicio. Implica que la carga
@@ -35,5 +29,15 @@ export const routes: Routes = [
   {
     path: 'device-manager/:id',
     loadComponent: () => import('./device-manager/device-manager.page').then( m => m.DeviceManagerPage)
+  },
+  { 
+    path: 'device/:id',
+    loadComponent: () => import('./pages/device-detail/device-detail.page').then(m => m.DeviceDetailPage)
+  },
+  // Dejar siempre al final
+  {
+    path: '**',
+    redirectTo: 'home',
+    pathMatch: 'full'
   },
 ];
