@@ -112,10 +112,10 @@ Sobre la API backend se crearon los siguientes endpoints:
 
 Capturas del la página de inicio donde se muestran todos
 los dispositivos.
-![LandingPage](images/homepage.png)
+![LandingPage](app-dam/images/homepage.png)
 
 Al hacer click, se puede ir a un modal de detalle de cada dispositivo. 
-![Device-Details](images/Device-Details.png)
+![Device-Details](app-dam/images/Device-Details.png)
 
 Apretando el botón de histórico de mediciones se accede a la siguiente página.
 Los colores que se presentan en cada cuadro guardan relación con la humedad de cada medición.
@@ -123,12 +123,12 @@ Los colores que se presentan en cada cuadro guardan relación con la humedad de 
 - Niveles altos (rojos) corresponden a niveles por encima del 60 %
 - Niveles intermedios (azules) corresponden a niveles entre 30 - 60 %
 
-![Histórico de mediciones](images/Device-Measurement-History.png)
+![Histórico de mediciones](app-dam/images/Device-Measurement-History.png)
 
 
 ## Funcionamiento
 
-![Histórico de mediciones](images/funcionamiento.gif)
+![Histórico de mediciones](app-dam/images/funcionamiento.gif)
 ## Licencia 📄
 
 Este proyecto está bajo Licencia ([MIT](https://choosealicense.com/licenses/mit/)). Podés ver el archivo [LICENSE.md](LICENSE.md) para más detalles sobre el uso de este material.
