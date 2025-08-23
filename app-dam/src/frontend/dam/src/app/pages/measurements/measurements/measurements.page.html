@@ -8,11 +8,11 @@
   @if (items.length > 0) {
     <ion-list inset="true">
       @for (m of items; track m.medicionId) {
-        <ion-item lines="full">
+        <ion-item lines="full" [appHumidityColor]="m.valor">
           <ion-label>
             <ion-note>{{ m.fecha | date:'dd/MM/yyyy HH:mm' }}</ion-note>
             <p>ID de la medición : {{ m.medicionId }}</p>
-            <p>Estado de la electroválvula: {{ m.apertura === 1 ? 'abierta' : 'cerrada' }}</p>
+            <p>Estado de la electroválvula: {{ m.apertura | aperturaLabel }}</p>
             <h2>
               <ion-text color="primary">Humedad: {{ m.valor }} %</ion-text>
             </h2>

@@ -7,6 +7,8 @@ import {
 } from '@ionic/angular/standalone';
 import { DatabaseService } from '../../../services/database.service';
 import { IMeasurements   } from '../../../interfaces/IMeasurements'
+import { AperturaLabelPipe} from '../../../pipes/apertura-label.pipe'
+import { HumidityColorDirective } from '../../../directives/humidity-color.directive'
 
 @Component({
   selector: 'app-measurements',
@@ -16,7 +18,7 @@ import { IMeasurements   } from '../../../interfaces/IMeasurements'
   imports: [
     CommonModule, RouterModule,
     IonContent, IonHeader, IonTitle, IonToolbar,
-    IonList, IonItem, IonLabel, IonText, IonNote
+    IonList, IonItem, IonLabel, IonText, IonNote, AperturaLabelPipe, HumidityColorDirective
   ],
 })
 export class MeasurementsPage implements OnInit {
