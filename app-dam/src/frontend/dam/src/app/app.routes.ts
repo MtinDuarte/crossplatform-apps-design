@@ -34,6 +34,10 @@ export const routes: Routes = [
     path: 'device/:id',
     loadComponent: () => import('./pages/device-detail/device-detail.page').then(m => m.DeviceDetailPage)
   },
+  {
+    path: 'device/:id/measurements',
+    loadComponent: () => import('./pages/measurements/measurements/measurements.page').then( m => m.MeasurementsPage)
+  },
   // Dejar siempre al final
   {
     path: '**',

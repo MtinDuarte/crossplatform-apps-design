@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
+import { IMeasurements  } from '../../interfaces/IMeasurements'
 
 @Component({
   selector: 'app-device-detail',
@@ -18,23 +19,42 @@ export class DeviceDetailPage implements OnInit {
 
   id!: number;
   ultimaMedicion?: number;
-  valveState: 'abierta' | 'cerrada' = 'cerrada';
+  ultimoReporte?: IMeasurements;
+  valveState: string;
 
-  constructor() { }
+  constructor() 
+  {
+    this.ultimaMedicion = 0;
+    this.valveState = 'cerrada'
+  }
 
   ngOnInit() {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
-    // acá podés traer la última medición desde la API si la tenés,
-    // o desde el DevicesStateService si lo usás.
-    // Ejemplo mock:
-    this.ultimaMedicion = Math.floor(Math.random() * 100);
+
+    this.db.getLastMeasurementByDevice(this.id)
+      .then(reporte => {
+        if (reporte) 
+        {
+          console.log("Exito obteniendo la última medición!")
+          this.ultimoReporte = reporte;
+          this.ultimaMedicion = reporte.valor;
+        }
+      })
+      .catch(err => {
+        console.error('Error obteniendo última medición', err);
+      });
   }
 
   toggleValve() {
-    // acá llamarías al endpoint que guarda Log_Riegos y Mediciones
-    this.valveState = this.valveState === 'abierta' ? 'cerrada' : 'abierta';
-    this.ultimaMedicion = Math.floor(Math.random() * 100);
-    // TODO: usar this.db.toggleValve(this.id) cuando tengas el backend
-  }
-
+    this.db.backupMeasurementsAfterValveToggle(this.id)
+      .then(({ humidity, valveState }) => {
+        // Refrescar estos datos en pantalla como "utima medición"
+        
+        this.ultimaMedicion = humidity;
+        this.valveState = valveState; // 'abierta' | 'cerrada'
+      })
+      .catch(err => {
+        console.error('Error al togglear válvula', err);
+      });
+  } 
 }

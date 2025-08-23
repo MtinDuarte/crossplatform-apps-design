@@ -66,9 +66,12 @@ deviceRouter.get(endpoint + "/:id/last-measurement", function(req, res) {
 deviceRouter.get(endpoint + '/:id/measurements', function (req, res) {
   const id = req.params.id;
   const sql = `
-    SELECT *
-    FROM Mediciones
-    WHERE dispositivoId = ?
+    SELECT m.medicionId, m.fecha, m.valor, LR.apertura
+    FROM Mediciones as m
+    INNER JOIN Dispositivos as d on d.dispositivoId = m.dispositivoId
+    INNER JOIN Electrovalvulas as e on e.electrovalvulaId = d.electrovalvulaId
+    INNER JOIN Log_Riegos as LR on (LR.electrovalvulaId = d.electrovalvulaId and LR.fecha = m.fecha)
+    WHERE d.dispositivoId = ?
     ORDER BY fecha DESC
   `;
   pool.query(sql, [id], function (err, rows) {
@@ -76,24 +79,6 @@ deviceRouter.get(endpoint + '/:id/measurements', function (req, res) {
     return res.status(200).json(rows);
   });
 });
-
-/**
- *  Get device resource by id
- */
-deviceRouter.get(endpoint + '/:id', function(req, res, next) {
-    
-    pool.query("SELECT * FROM Dispositivos where dispositivoId = " +req.params.id, function(error,respuesta,campos)
-    {
-        if(error==null){
-            console.log(respuesta);
-            res.status(200).send(respuesta);    
-        }else{
-            console.log(error);
-            res.status(409).send({error:"Falló la consulta"});
-        }
-    })
-});
-
 deviceRouter.post(endpoint + '/:id' + '/toggle', function(req,res,next)
 {
     const deviceId = Number(req.params.id)
@@ -162,11 +147,28 @@ deviceRouter.post(endpoint + '/:id' + '/toggle', function(req,res,next)
       function rollback(e) {
         conn.rollback(() => {
           conn.release();
-          res.status(400).send(e);
+          res.status(400).json({ error: e?.message || e });
         });
       }
     });
   });
+});
+
+/**
+ *  Get device resource by id
+ */
+deviceRouter.get(endpoint + '/:id', function(req, res, next) {
+    
+    pool.query("SELECT * FROM Dispositivos where dispositivoId = " +req.params.id, function(error,respuesta,campos)
+    {
+        if(error==null){
+            console.log(respuesta);
+            res.status(200).send(respuesta);    
+        }else{
+            console.log(error);
+            res.status(409).send({error:"Falló la consulta"});
+        }
+    })
 });
 
 module.exports = deviceRouter;

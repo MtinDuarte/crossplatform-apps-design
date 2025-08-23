@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Historial de mediciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (items.length > 0) {
+    <ion-list inset="true">
+      @for (m of items; track m.medicionId) {
+        <ion-item lines="full">
+          <ion-label>
+            <ion-note>{{ m.fecha | date:'dd/MM/yyyy HH:mm' }}</ion-note>
+            <p>ID de la medición : {{ m.medicionId }}</p>
+            <p>Estado de la electroválvula: {{ m.apertura === 1 ? 'abierta' : 'cerrada' }}</p>
+            <h2>
+              <ion-text color="primary">Humedad: {{ m.valor }} %</ion-text>
+            </h2>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
+    <ion-item>
+      <ion-label>No hay mediciones registradas</ion-label>
+    </ion-item>
+  }
+</ion-content>
