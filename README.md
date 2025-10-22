@@ -41,13 +41,13 @@ Este proyecto implementa una aplicación en Ionic/Angular con un backend Node.js
 
 La app permite:
 
-- Ver un listado de dispositivos con su nombre y ubicación.
+- Ver un listado de dispositivos con su nombre.
 
 - Consultar el detalle de un dispositivo con su última medición.
 
-- Abrir/cerrar la electroválvula asociada (toggle).
+- Habilitar y Deshabilitar canal MQTT (toggle).
 
-- Registrar automáticamente la medición de humedad y la acción de riego.
+- Registrar automáticamente la medición de voltaje medida por el microcontrolador.
 
 - Visualizar el historial de mediciones de cada dispositivo.
 
@@ -55,9 +55,8 @@ Cumple los requisitos del enunciado:
 
 - Lecturas desde BD: solo en /home (lista de dispositivos) y /device/:id/measurements (histórico).
 
-- Escrituras: solo al accionar la válvula (insert en Mediciones y Log_Riegos).
+- Escrituras: Se consolida en la base de datos al momento en que el dispositivo reporta una medición y el dispositivo se encuentra registrado..
 
-- Incluye pipe custom, directiva de atributo, 2× @for y 1× @if.
 
 ## ⚙️ Tecnologías utilizadas
 
@@ -83,6 +82,7 @@ Cumple los requisitos del enunciado:
         
     /backend
     ├── devices/index.js             # Rutas /devices
+    ├── mqtt/index.js                # Rutas /mqtt
     ├── mysql-connector.js           # Pool de conexión MySQL
 
 ## Endpoints creados sobre el backend
@@ -104,18 +104,18 @@ Sobre la API backend se crearon los siguientes endpoints:
     Obtener mediciones por id de dispositivo
     GET     devices/:id/measurements
 
-    Consolidar datos luego de conmutar electroválvula
-    POST    devices/:id/toggle
+    Habilitar / Deshabilitar canal MQTT.
+    POST    '/:DeviceID/enable-mqtt/:enable'
 
 
 📸 Capturas
 
 Capturas del la página de inicio donde se muestran todos
 los dispositivos.
-![LandingPage](app-dam/images/homepage.png)
+![LandingPage](app-dam/images/devices-home.png)
 
 Al hacer click, se puede ir a un modal de detalle de cada dispositivo. 
-![Device-Details](app-dam/images/Device-Details.png)
+![Device-Details](app-dam/images/devices-detail.png)
 
 Apretando el botón de histórico de mediciones se accede a la siguiente página.
 Los colores que se presentan en cada cuadro guardan relación con la humedad de cada medición.
@@ -123,12 +123,8 @@ Los colores que se presentan en cada cuadro guardan relación con la humedad de 
 - Niveles altos (rojos) corresponden a niveles por encima del 60 %
 - Niveles intermedios (azules) corresponden a niveles entre 30 - 60 %
 
-![Histórico de mediciones](app-dam/images/Device-Measurement-History.png)
+![Histórico de mediciones](app-dam/images/devices-measurement.png)
 
-
-## Funcionamiento
-
-![Histórico de mediciones](app-dam/images/funcionamiento.gif)
 ## Licencia 📄
 
 Este proyecto está bajo Licencia ([MIT](https://choosealicense.com/licenses/mit/)). Podés ver el archivo [LICENSE.md](LICENSE.md) para más detalles sobre el uso de este material.
