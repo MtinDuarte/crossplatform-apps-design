@@ -1,0 +1,8 @@
+# ESP-IDF build artifacts
+Firmware/esp32/build/
+Firmware/esp32/sdkconfig
+Firmware/esp32/sdkconfig.old
+Firmware/esp32/main/client.crt
+Firmware/esp32/main/client.key
+Firmware/esp32/main/mosquitto.org.crt
+Firmware/esp32/main/build/
