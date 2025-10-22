@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
-import { IMeasurements  } from '../../interfaces/IMeasurements'
+import { IMeasurements  } from '../../interfaces/IMeasurements';
+import { MqttService } from 'src/app/services/mqtt.service';
 
 @Component({
   selector: 'app-device-detail',
@@ -16,28 +17,30 @@ export class DeviceDetailPage implements OnInit {
 
   private route = inject(ActivatedRoute);
   private db = inject(DatabaseService);
+  private IMqtt = inject(MqttService);
 
-  id!: number;
-  ultimaMedicion?: number;
-  ultimoReporte?: IMeasurements;
-  valveState: string;
+  DeviceID!: string;
+  lastMeasurement?: number;
+  lastReport?: IMeasurements;
+  mqttChannel: string;
 
   constructor() 
   {
-    this.ultimaMedicion = 0;
-    this.valveState = 'cerrada'
+    this.lastMeasurement = 0;
+    this.mqttChannel = 'Habilitado'
   }
 
   ngOnInit() {
-    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    
+    this.DeviceID = String(this.route.snapshot.paramMap.get('id'));
 
-    this.db.getLastMeasurementByDevice(this.id)
+    this.db.getLastMeasurementByDevice(this.DeviceID)
       .then(reporte => {
         if (reporte) 
         {
           console.log("Exito obteniendo la última medición!")
-          this.ultimoReporte = reporte;
-          this.ultimaMedicion = reporte.valor;
+          this.lastReport = reporte;
+          this.lastMeasurement = reporte.Voltage;
         }
       })
       .catch(err => {
@@ -45,16 +48,22 @@ export class DeviceDetailPage implements OnInit {
       });
   }
 
-  toggleValve() {
-    this.db.backupMeasurementsAfterValveToggle(this.id)
-      .then(({ humidity, valveState }) => {
-        // Refrescar estos datos en pantalla como "utima medición"
-        
-        this.ultimaMedicion = humidity;
-        this.valveState = valveState; // 'abierta' | 'cerrada'
-      })
-      .catch(err => {
-        console.error('Error al togglear válvula', err);
-      });
-  } 
+  async toggleMqtt(deviceId: string, mqttChannel: string) {
+    try {
+      // ✅ Calcula el nuevo estado PRIMERO
+      const newState = (mqttChannel === 'Habilitada') ? 'Deshabilitada' : 'Habilitada';
+      
+      // ✅ Envía el NUEVO estado al backend
+      await this.IMqtt.enableMQTTChannelByDevice(deviceId, newState);
+      
+      // ✅ Solo actualiza la UI si el backend responde OK
+      this.mqttChannel = newState;
+      
+      console.log(`✅ Canal MQTT cambiado a: ${newState}`);
+
+    } catch (error) {
+      console.error('⚠️ Error de comunicación con el servidor:', error);
+      // Mostrar toast/alerta
+    }
+  }
 }

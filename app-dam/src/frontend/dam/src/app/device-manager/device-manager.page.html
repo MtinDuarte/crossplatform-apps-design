@@ -8,11 +8,11 @@
 <ion-content class="ion-padding">
     @if (DevicesGroup.length > 0) {
       <ion-list inset="true">
-        @for (d of DevicesGroup; track d.dispositivoId) {
-        <ion-item button detail="true" [routerLink]="['/device', d.dispositivoId]" routerDirection="forward">
+        @for (d of DevicesGroup; track d.DeviceID) {
+        <ion-item button detail="true" [routerLink]="['/device', d.DeviceID]" routerDirection="forward">
           <ion-label>
-            <h2>{{ d.nombre }}</h2>
-            <p>Ubicación: {{ d.ubicacion }}</p>
+            <h2>{{ d.DeviceID }}</h2>
+            <!-- <p>Ubicación: {{ d.ubicacion }}</p> -->
           </ion-label>
         </ion-item>
         }

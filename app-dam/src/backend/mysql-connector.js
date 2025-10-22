@@ -35,7 +35,7 @@ pool.getConnection((err,conn) => {
                 console.log('La conexión fue rechazada')
                 break;
             default: 
-                console.log('Error desconocido');
+                console.log('Error desconocido: ' + err.code );
                 break;
         }
 

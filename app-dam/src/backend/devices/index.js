@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const { toggleMQTTChannel } = require('../mqtt/index');
 var cors = require('cors');
 const deviceRouter = express.Router();
 
@@ -19,7 +20,9 @@ var pool = require('../mysql-connector').pool
  */
 deviceRouter.get(endpoint , function(req,res)
 {
-    pool.query('SELECT * from Dispositivos',function(err,result,fields) 
+    console.log("Backend: Query done from devices.");
+
+    pool.query('SELECT * from Devices',function(err,result,fields) 
     {
         if(err)
         {
@@ -34,7 +37,7 @@ deviceRouter.get(endpoint , function(req,res)
  * Get all measurements
  */
 deviceRouter.get(endpoint + '/measurements', function (req, res) {
-  const sql = 'SELECT * FROM Mediciones ORDER BY fecha DESC';
+  const sql = 'SELECT * FROM Measurements ORDER BY TimestampUTC DESC';
   pool.query(sql, function (err, rows) {
     if (err) return res.status(400).send(err);
     // devuelve TODAS
@@ -45,13 +48,15 @@ deviceRouter.get(endpoint + '/measurements', function (req, res) {
 /**
  * Get last measurement resource by id
  */
-deviceRouter.get(endpoint + "/:id/last-measurement", function(req, res) {
-  const id = req.params.id;
+deviceRouter.get(endpoint + "/:DeviceID/last-measurement", function(req, res) {
+  
+  const id = req.params.DeviceID;
+  
   const sql = `
     SELECT *
-    FROM Mediciones
-    WHERE dispositivoId = ?
-    ORDER BY fecha DESC
+    FROM Measurements
+    WHERE DeviceID = ?
+    ORDER BY TimestampUTC DESC
     LIMIT 1
   `;
   pool.query(sql, [id], function(err, result) {
@@ -66,13 +71,10 @@ deviceRouter.get(endpoint + "/:id/last-measurement", function(req, res) {
 deviceRouter.get(endpoint + '/:id/measurements', function (req, res) {
   const id = req.params.id;
   const sql = `
-    SELECT m.medicionId, m.fecha, m.valor, LR.apertura
-    FROM Mediciones as m
-    INNER JOIN Dispositivos as d on d.dispositivoId = m.dispositivoId
-    INNER JOIN Electrovalvulas as e on e.electrovalvulaId = d.electrovalvulaId
-    INNER JOIN Log_Riegos as LR on (LR.electrovalvulaId = d.electrovalvulaId and LR.fecha = m.fecha)
-    WHERE d.dispositivoId = ?
-    ORDER BY fecha DESC
+    SELECT *
+    FROM Measurements as m
+    INNER JOIN Devices as d on d.DeviceID = m.DeviceID
+    ORDER BY TimestampUTC DESC
   `;
   pool.query(sql, [id], function (err, rows) {
     if (err) return res.status(400).send(err);
@@ -80,82 +82,26 @@ deviceRouter.get(endpoint + '/:id/measurements', function (req, res) {
   });
 });
 
-/**
- * Consolidate deviceData after toggle
- */
-deviceRouter.post(endpoint + '/:id' + '/toggle', function(req,res,next)
-{
-    const deviceId = Number(req.params.id)
-    if (Number.isNaN(deviceId)) return res.status(400).send({ error: 'id inválido' });
+// Asegúrate de que el método sea .post() y que capture el parámetro ':id'
+deviceRouter.post(endpoint + '/:DeviceID' + '/enable-mqtt' + '/:enable', function(req, res) {
+    // 1. Capturar el ID del dispositivo desde la URL
+   const DeviceID = req.params.DeviceID;
 
-    const humidity = Math.floor(Math.random()*101)
+    // 2. Capturar el valor booleano 'enable' desde el cuerpo JSON
+    // Se recomienda usar una desestructuración o acceso seguro.
+   let enableState = req.params.enable; 
 
-    pool.getConnection((err, conn) => {
-         if (err) return res.status(500).send(err);
-
-         conn.beginTransaction(err => {
-             if (err) { conn.release(); return res.status(500).send(err); }
-
-                // 1) Buscar electroválvula por dispositivo
-                const q1 = `SELECT electrovalvulaId FROM Dispositivos WHERE dispositivoId = ?`;
-                conn.query(q1, [deviceId], (err, rows1) => {
-                    if (err) return rollback(err);
-                    if (!rows1 || rows1.length === 0) return rollback({ error: 'Electroválvula no encontrada' });
-                    
-                const electrovalvulaId = rows1[0].electrovalvulaId;
-
-                // 2) Obtener la última acción registrada
-                const q2 = `
-                SELECT apertura
-                FROM Log_Riegos
-                WHERE electrovalvulaId = ?
-                ORDER BY fecha DESC
-                LIMIT 1
-                `;
-                conn.query(q2, [electrovalvulaId], (err, rows2) => {
-                    if (err) return rollback(err);
-                
-                const lastAction = rows2.length ? rows2[0].apertura : 0; // asumimos cerrada
-                const newAction = lastAction === 1 ? 0 : 1;
-
-            // 3) Insertar medición
-          const q3 = `
-            INSERT INTO Mediciones (fecha, valor, dispositivoId)
-            VALUES (UTC_TIMESTAMP(), ?, ?)
-          `;
-          conn.query(q3, [humidity, deviceId], (err) => {
-            if (err) return rollback(err);
-
-            // 4) Insertar log de riego
-            const q4 = `
-              INSERT INTO Log_Riegos (fecha, electrovalvulaId, apertura)
-              VALUES (UTC_TIMESTAMP(), ?, ?)
-            `;
-            conn.query(q4, [electrovalvulaId, newAction], (err) => {
-              if (err) return rollback(err);
-
-              // 5) Commit y responder
-              conn.commit(err => {
-                if (err) return rollback(err);
-                conn.release();
-                return res.status(200).json({
-                  humidity,
-                  valveState: newAction === 1 ? 'abierta' : 'cerrada'
-                });
-              });
-            });
-          });
-        });
-      });
-
-      function rollback(e) {
-        conn.rollback(() => {
-          conn.release();
-          res.status(400).json({ error: e?.message || e });
-        });
-      }
-    });
-  });
+   console.log("Device ID " + DeviceID + " enableState: " + enableState);
+    
+    toggleMQTTChannel(DeviceID, enableState, (err) => {
+        if (err) {
+            console.error('Error al publicar el comando MQTT:', err);
+            // Devolver un estado 500 (Error Interno del Servidor) con el valor false
+            return res.status(500).send(false); 
+        }
+         // Devolver el valor true si el publish fue exitoso (estado 200 OK)
+         res.status(200).send(true); 
+     });
 });
 
 /**
@@ -163,7 +109,7 @@ deviceRouter.post(endpoint + '/:id' + '/toggle', function(req,res,next)
  */
 deviceRouter.get(endpoint + '/:id', function(req, res, next) {
     
-    pool.query("SELECT * FROM Dispositivos where dispositivoId = " +req.params.id, function(error,respuesta,campos)
+    pool.query("SELECT * FROM Devices where ID = " +req.params.id, function(error,respuesta,campos)
     {
         if(error==null){
             console.log(respuesta);

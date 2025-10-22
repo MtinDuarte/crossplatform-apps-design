@@ -7,8 +7,8 @@ import { Directive, Input, OnChanges, ElementRef, Renderer2 } from '@angular/cor
 })
 export class HumidityColorDirective implements OnChanges {
   @Input('appHumidityColor') value: number | string | null | undefined;
-  @Input() low = 30;   // < 30 => bajo
-  @Input() high = 70;  // > 70 => alto
+  @Input() low = 2700;   // < 30 => bajo
+  @Input() high = 3300;  // > 70 => alto
 
   constructor(private el: ElementRef, private r: Renderer2) {}
 

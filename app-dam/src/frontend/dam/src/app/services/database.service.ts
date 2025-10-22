@@ -27,18 +27,18 @@ export class DatabaseService {
         this.HTTPClient_.get<IMeasurements[]>(`${this.base}/devices/${id}/measurements`)
     );
   }
-  getLastMeasurementByDevice(id:number) : Promise <IMeasurements>
+  getLastMeasurementByDevice(id:String) : Promise <IMeasurements>
   {
     return firstValueFrom(this.HTTPClient_.get<IMeasurements>((`${this.base}/devices/${id}/last-measurement`)))
   }
-  backupMeasurementsAfterValveToggle(
-    id: number
-  ): Promise<{ humidity: number; valveState: 'abierta' | 'cerrada' }> {
-    return firstValueFrom(
-      this.HTTPClient_.post<{ humidity: number; valveState: 'abierta' | 'cerrada' }>(
-        `${this.base}/devices/${id}/toggle`,
-        {}
-      )
-    );
-  }
+  // backupMeasurementsAfterValveToggle(
+  //   id: number
+  // ): Promise<{ voltage: number; valveState: 'abierta' | 'cerrada' }> {
+  //   return firstValueFrom(
+  //     this.HTTPClient_.post<{ voltage: number; valveState: 'abierta' | 'cerrada' }>(
+  //       `${this.base}/devices/${id}/toggle`,
+  //       {}
+  //     )
+  //   );
+  // }
 }

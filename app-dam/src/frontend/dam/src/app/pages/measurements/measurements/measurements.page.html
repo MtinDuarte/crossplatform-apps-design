@@ -7,14 +7,13 @@
 <ion-content class="ion-padding">
   @if (items.length > 0) {
     <ion-list inset="true">
-      @for (m of items; track m.medicionId) {
-        <ion-item lines="full" [appHumidityColor]="m.valor">
+      @for (m of items; track m.MeasureID) {
+        <ion-item lines="full" [appHumidityColor]="m.Voltage">
           <ion-label>
-            <ion-note>{{ m.fecha | date:'dd/MM/yyyy HH:mm' }}</ion-note>
-            <p>ID de la medición : {{ m.medicionId }}</p>
-            <p>Estado de la electroválvula: {{ m.apertura | aperturaLabel }}</p>
+            <ion-note>{{ m.TimestampUTC | date:'dd/MM/yyyy HH:mm' }}</ion-note>
+            <p>ID de la medición : {{ m.MeasureID }}</p>
             <h2>
-              <ion-text color="primary">Humedad: {{ m.valor }} %</ion-text>
+              <ion-text color="primary">Voltage: {{ m.Voltage }} mV</ion-text>
             </h2>
           </ion-label>
         </ion-item>

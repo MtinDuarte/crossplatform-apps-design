@@ -1,7 +1,7 @@
 export interface IMeasurements
 {
-    medicionId : number,
-    fecha : Date,
-    valor : number,
-    apertura: number
+    MeasureID : number,
+    DeviceID : string,
+    Voltage : number,
+    TimestampUTC: Date
 }

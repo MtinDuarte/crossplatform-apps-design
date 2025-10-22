@@ -1,7 +1,7 @@
 export interface IDevices
 {   
-    dispositivoId : number,
-    nombre : string,
-    ubicacion: string,
-    electrovalvulaId : number
+    ID : number,
+    DeviceID : string,
+    MAC_ADDRESS: string,
+    DateTimeCreated : Date
 }

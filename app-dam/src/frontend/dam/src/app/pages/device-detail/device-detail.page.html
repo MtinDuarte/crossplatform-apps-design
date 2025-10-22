@@ -7,17 +7,16 @@
 <ion-content class="ion-padding">
   <ion-card>
     <ion-card-content>
-      <p><strong>ID:</strong> {{ id }}</p>
-      <p><strong>Última humedad:</strong> {{ ultimaMedicion }} %</p>
-      <p><strong>Electroválvula:</strong> {{ valveState }}</p>
+      <p><strong>ID:</strong> {{ DeviceID }}</p>
+      <p><strong>Última medición de tensión:</strong> {{ lastMeasurement }} mV</p>
     </ion-card-content>
   </ion-card>
 
-  <ion-button expand="block" (click)="toggleValve()">
-    {{ valveState === 'abierta' ? 'Cerrar' : 'Abrir' }} válvula
+  <ion-button expand="block" (click)="toggleMqtt(DeviceID, mqttChannel)"> Toggle canal MQTT: 
+    {{ mqttChannel === 'Habilitada' ? 'Deshabilitar' : 'Habilitar'}} 
   </ion-button>
 
-  <ion-button expand="block" color="medium" [routerLink]="['/device', id, 'measurements']">
+  <ion-button expand="block" color="medium" [routerLink]="['/device', DeviceID, 'measurements']">
     Ver historial de mediciones
   </ion-button>
 </ion-content>
